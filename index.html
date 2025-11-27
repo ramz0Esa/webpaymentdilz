@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran Dark Cinematic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.9) 100%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            z-index: 1;
+            flex: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 2rem;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff0080, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .payment-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .payment-card {
+            background: rgba(20, 20, 30, 0.7);
+            border-radius: 15px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+        }
+
+        .payment-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .payment-info {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .payment-label {
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: linear-gradient(45deg, #ff0080, #00ffff);
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+        }
+
+        .instructions {
+            margin-top: 2rem;
+        }
+
+        .instructions h3 {
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+        }
+
+        .instructions ol {
+            padding-left: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .instructions li {
+            margin-bottom: 0.8rem;
+            opacity: 0.9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(20, 20, 30, 0.9);
+            color: #00ffff;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+            z-index: 1000;
+            border-left: 4px solid #00ffff;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .payment-card {
+                padding: 1.5rem;
+            }
+            
+            .payment-number {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <video id="video-background" autoplay muted loop>
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-dark-blue-flow-1195-large.mp4" type="video/mp4">
+        Browser Anda tidak mendukung video HTML5.
+    </video>
+    <div class="overlay"></div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        Nomor berhasil disalin!
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">CinemaPay</div>
+            <p class="tagline">Layanan Pembayaran Premium dengan Pengalaman Cinematic</p>
+        </header>
+
+        <div class="payment-container">
+            <div class="payment-card">
+                <h2 class="payment-title">Pembayaran via DANA</h2>
+                <div class="payment-info">
+                    <div class="payment-label">Nomor DANA:</div>
+                    <div class="payment-number" id="dana-number">085795653714</div>
+                </div>
+                <button class="copy-btn" id="copy-btn">Salin Nomor</button>
+
+                <div class="instructions">
+                    <h3>Instruksi Pembayaran:</h3>
+                    <ol>
+                        <li>Buka aplikasi DANA di ponsel Anda</li>
+                        <li>Pilih menu "Kirim" atau "Transfer"</li>
+                        <li>Masukkan nomor DANA yang tertera di atas</li>
+                        <li>Masukkan jumlah yang ingin ditransfer</li>
+                        <li>Konfirmasi dan selesaikan transaksi</li>
+                        <li>Simpan bukti transfer untuk konfirmasi</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 CinemaPay. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Fungsi untuk menyalin nomor DANA
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const danaNumber = document.getElementById('dana-number').textContent;
+            navigator.clipboard.writeText(danaNumber).then(function() {
+                // Tampilkan notifikasi
+                const notification = document.getElementById('notification');
+                notification.classList.add('show');
+                
+                // Sembunyikan notifikasi setelah 3 detik
+                setTimeout(function() {
+                    notification.classList.remove('show');
+                }, 3000);
+            }).catch(function(err) {
+                console.error('Gagal menyalin teks: ', err);
+            });
+        });
+
+        // Fallback jika video tidak dapat dimuat
+        document.getElementById('video-background').addEventListener('error', function() {
+            this.style.display = 'none';
+            document.body.style.background = 'radial-gradient(circle, #0f1b2e 0%, #000 100%)';
+        });
+    </script>
+</body>
+</html>
